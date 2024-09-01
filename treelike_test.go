@@ -171,3 +171,14 @@ func TestMultiRoot(t *testing.T) {
 		t.Errorf("describeTree() = %q; want %q", result, expected)
 	}
 }
+
+func TestWinNewLines(t *testing.T) {
+	input := "root\r\n    child1\r\n    child2\r\n        grandchild1\r\n"
+	root := parseInput(input)
+	opts := Options{rootDot: true}
+	result := describeTree(root, &opts)
+	expected := ".\n└── root\n    ├── child1\n    └── child2\n        └── grandchild1"
+	if result != expected {
+		t.Errorf("describeTree() = %q; want %q", result, expected)
+	}
+}

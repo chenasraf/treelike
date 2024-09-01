@@ -36,11 +36,12 @@ func parseDepth(line string, indentSize int) int {
 }
 
 func parseInput(input string) *Node {
+	input = strings.Replace(input, "\r", "", -1)
 	root := &Node{".", 0, []*Node{}, nil}
 	current := root
 	indentSize := 0
 
-	for _, line := range strings.Split(input, "\n") {
+	for _, line := range strings.Split(input, LE) {
 		if line == "" {
 			continue
 		}
@@ -72,7 +73,7 @@ func describeTree(node *Node, opts *Options) string {
 
 	for _, child := range node.children {
 		next := describeTree(child, opts)
-		for _, line := range strings.Split(next, "\n") {
+		for _, line := range strings.Split(next, LE) {
 			if strings.TrimSpace(line) != "" {
 				lines = append(lines, line)
 			}
@@ -86,7 +87,7 @@ func describeTree(node *Node, opts *Options) string {
 		}
 	}
 
-	return strings.Join(nonBlankLines, "\n")
+	return strings.Join(nonBlankLines, LE)
 }
 
 func getPrefixes(opts *Options) (string, string, string, string) {
@@ -95,6 +96,13 @@ func getPrefixes(opts *Options) (string, string, string, string) {
 	}
 	return UTF8_CHILD, UTF8_LAST_CHILD, UTF8_DIRECTORY, UTF8_EMPTY
 }
+
+// func getLE(input string) string {
+// 	if strings.Contains(input, LE_WIN) || os.IsPathSeparator('\\') {
+// 		return LE_WIN
+// 	}
+// 	return LE_UNIX
+// }
 
 func getTreeLine(node *Node, opts *Options) string {
 	if node.parent == nil {
