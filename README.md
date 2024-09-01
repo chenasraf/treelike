@@ -1,5 +1,7 @@
 # TreeLike
 
+[![Test](https://github.com/chenasraf/treelike/actions/workflows/test.yml/badge.svg)](https://github.com/chenasraf/treelike/actions/workflows/test.yml) [![Release](https://github.com/chenasraf/treelike/actions/workflows/release.yml/badge.svg)](https://github.com/chenasraf/treelike/actions/workflows/test.yml)
+
 TreeLike is a command-line tool that prints a tree-like representation of the input. It can read
 from a file, standard input, or command-line arguments.
 
