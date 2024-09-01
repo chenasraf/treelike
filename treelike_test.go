@@ -160,3 +160,14 @@ func TestGetPrefixes(t *testing.T) {
 		}
 	}
 }
+
+func TestMultiRoot(t *testing.T) {
+	input := "I\n am\n  a\n   superhero!\na\n what?\na\n superhero!\n"
+	root := parseInput(input)
+	opts := Options{rootDot: true}
+	result := describeTree(root, &opts)
+	expected := ".\n├── I\n│   └── am\n│       └── a\n│           └── superhero!\n├── a\n│   └── what?\n└── a\n    └── superhero!"
+	if result != expected {
+		t.Errorf("describeTree() = %q; want %q", result, expected)
+	}
+}

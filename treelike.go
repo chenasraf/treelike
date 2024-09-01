@@ -49,11 +49,17 @@ func parseInput(input string) *Node {
 			indentSize = depth
 			depth /= indentSize
 		}
+		if depth < 0 {
+			depth = 0
+		}
 		name := line[depth*indentSize:]
 		if depth <= current.depth && current.parent != nil {
-			for current.depth >= depth {
+			for current != nil && current.depth >= depth {
 				current = current.parent
 			}
+		}
+		if current == nil {
+			current = root
 		}
 		current.children = append(current.children, &Node{name, depth, []*Node{}, current})
 		current = current.children[len(current.children)-1]
