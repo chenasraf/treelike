@@ -1,7 +1,7 @@
 package main
 
 const (
-	LE      string = "\n"
+	// LE      string = "\n"
 	LE_UNIX string = "\n"
 	LE_WIN  string = "\r\n"
 )
