@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/chenasraf/treelike/compare/v1.0.0...v1.0.1) (2024-09-01)
+
+
+### Bug Fixes
+
+* ignore windows line endings ([1e48044](https://github.com/chenasraf/treelike/commit/1e480441430a5fda70a698e6f840fd78abb4c4b3))
+* multiple roots ([daacaad](https://github.com/chenasraf/treelike/commit/daacaad20b8425df00cc57d5a7d15c67234078b5))
+
 ## 1.0.0 (2024-09-01)
 
 
