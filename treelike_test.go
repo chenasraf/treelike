@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -69,10 +70,10 @@ func TestGetAsciiLine(t *testing.T) {
 	root.children = append(root.children, child)
 	opts := Options{rootDot: true}
 
-	result := getAsciiLine(child, &opts)
+	result := getTreeLine(child, &opts)
 	expected := "└── child"
 	if result != expected {
-		t.Errorf("getAsciiLine() = %q; want %q", result, expected)
+		t.Errorf("getTreeLine() = %q; want %q", result, expected)
 	}
 }
 
@@ -110,6 +111,9 @@ func TestIsLastChild(t *testing.T) {
 }
 
 func TestRemovePrefix(t *testing.T) {
+	opts := Options{false, "", strings.Builder{}, "utf-8", false, false, true}
+	CHILD, LAST_CHILD, DIRECTORY, EMPTY := getPrefixes(&opts)
+
 	tests := []struct {
 		str      string
 		expected string
@@ -121,9 +125,38 @@ func TestRemovePrefix(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := removePrefix(test.str)
+		result := removePrefix(test.str, &opts)
 		if result != test.expected {
 			t.Errorf("removePrefix(%q) = %q; want %q", test.str, result, test.expected)
+		}
+	}
+}
+func TestGetPrefixes(t *testing.T) {
+	tests := []struct {
+		charset           string
+		expectedChild     string
+		expectedLastChild string
+		expectedDirectory string
+		expectedEmpty     string
+	}{
+		{"utf-8", UTF8_CHILD, UTF8_LAST_CHILD, UTF8_DIRECTORY, UTF8_EMPTY},
+		{"ascii", ASCII_CHILD, ASCII_LAST_CHILD, ASCII_DIRECTORY, ASCII_EMPTY},
+	}
+
+	for _, test := range tests {
+		opts := &Options{charset: test.charset}
+		child, lastChild, directory, empty := getPrefixes(opts)
+		if child != test.expectedChild {
+			t.Errorf("For charset %s, expected child prefix %s, but got %s", test.charset, test.expectedChild, child)
+		}
+		if lastChild != test.expectedLastChild {
+			t.Errorf("For charset %s, expected last child prefix %s, but got %s", test.charset, test.expectedLastChild, lastChild)
+		}
+		if directory != test.expectedDirectory {
+			t.Errorf("For charset %s, expected directory prefix %s, but got %s", test.charset, test.expectedDirectory, directory)
+		}
+		if empty != test.expectedEmpty {
+			t.Errorf("For charset %s, expected empty prefix %s, but got %s", test.charset, test.expectedEmpty, empty)
 		}
 	}
 }

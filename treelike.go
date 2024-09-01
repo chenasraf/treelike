@@ -54,6 +54,10 @@ func getOpts() Options {
 		case "-c", "--charset":
 			{
 				opts.charset = args[1]
+				if opts.charset != "utf-8" && opts.charset != "ascii" {
+					fmt.Fprintf(os.Stderr, "Invalid charset: %s\n", opts.charset)
+					os.Exit(1)
+				}
 				args = args[2:]
 			}
 		case "-s", "--trailing-slash":
@@ -133,7 +137,7 @@ func parseInput(input string) *Node {
 }
 
 func describeTree(node *Node, opts *Options) string {
-	lines := []string{getAsciiLine(node, opts)}
+	lines := []string{getTreeLine(node, opts)}
 
 	for _, child := range node.children {
 		next := describeTree(child, opts)
@@ -155,13 +159,27 @@ func describeTree(node *Node, opts *Options) string {
 }
 
 const (
-	CHILD      string = "├── "
-	LAST_CHILD string = "└── "
-	DIRECTORY  string = "│   "
-	EMPTY      string = "    "
+	UTF8_CHILD      string = "├── "
+	UTF8_LAST_CHILD string = "└── "
+	UTF8_DIRECTORY  string = "│   "
+	UTF8_EMPTY      string = "    "
 )
 
-func getAsciiLine(node *Node, opts *Options) string {
+const (
+	ASCII_CHILD      string = "|-- "
+	ASCII_LAST_CHILD string = "`-- "
+	ASCII_DIRECTORY  string = "|   "
+	ASCII_EMPTY      string = "    "
+)
+
+func getPrefixes(opts *Options) (string, string, string, string) {
+	if opts.charset == "ascii" {
+		return ASCII_CHILD, ASCII_LAST_CHILD, ASCII_DIRECTORY, ASCII_EMPTY
+	}
+	return UTF8_CHILD, UTF8_LAST_CHILD, UTF8_DIRECTORY, UTF8_EMPTY
+}
+
+func getTreeLine(node *Node, opts *Options) string {
 	if node.parent == nil {
 		if opts.rootDot {
 			return node.name
@@ -169,6 +187,8 @@ func getAsciiLine(node *Node, opts *Options) string {
 			return ""
 		}
 	}
+
+	CHILD, LAST_CHILD, DIRECTORY, EMPTY := getPrefixes(opts)
 
 	var chunks strings.Builder
 
@@ -194,7 +214,7 @@ func getAsciiLine(node *Node, opts *Options) string {
 	if opts.rootDot {
 		return str
 	}
-	return removePrefix(str)
+	return removePrefix(str, opts)
 }
 
 func getName(node *Node, opts *Options) string {
@@ -220,7 +240,9 @@ func isLastChild(node *Node) bool {
 	return node.parent != nil && node.parent.children[len(node.parent.children)-1] == node
 }
 
-func removePrefix(str string) string {
+func removePrefix(str string, opts *Options) string {
+	CHILD, LAST_CHILD, DIRECTORY, EMPTY := getPrefixes(opts)
+
 	prefixes := []string{CHILD, LAST_CHILD, DIRECTORY, EMPTY}
 
 	for _, prefix := range prefixes {
