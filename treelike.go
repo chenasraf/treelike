@@ -21,81 +21,6 @@ func helpText() {
 	fmt.Println("  -D, --no-root-dot        Do not display a root element")
 }
 
-type Options struct {
-	fromStdin     bool
-	fromFile      string
-	extra         strings.Builder
-	charset       string
-	trailingSlash bool
-	fullPath      bool
-	rootDot       bool
-}
-
-func getOpts() Options {
-	opts := Options{false, "", strings.Builder{}, "utf-8", false, false, true}
-	args := os.Args[1:]
-	for len(args) > 0 {
-		switch args[0] {
-		case "-h", "--help":
-			{
-				helpText()
-				os.Exit(0)
-			}
-		case "-", "--stdin":
-			{
-				opts.fromStdin = true
-				args = args[1:]
-			}
-		case "-f", "--file":
-			{
-				opts.fromFile = args[1]
-				args = args[2:]
-			}
-		case "-c", "--charset":
-			{
-				opts.charset = args[1]
-				if opts.charset != "utf-8" && opts.charset != "ascii" {
-					fmt.Fprintf(os.Stderr, "Invalid charset: %s\n", opts.charset)
-					os.Exit(1)
-				}
-				args = args[2:]
-			}
-		case "-s", "--trailing-slash":
-			{
-				opts.trailingSlash = true
-				args = args[1:]
-			}
-		case "-p", "--full-path":
-			{
-				opts.fullPath = true
-				args = args[1:]
-			}
-		case "-D", "--no-root-dot":
-			{
-				opts.rootDot = false
-				args = args[1:]
-			}
-		default:
-			{
-				opts.extra.WriteString(args[0] + "\n")
-				args = args[1:]
-			}
-		}
-	}
-	return opts
-}
-
-type Node struct {
-	// name of node
-	name string
-	// depth of node
-	depth int
-	// children of node
-	children []*Node
-	// parent of node
-	parent *Node
-}
-
 func parseDepth(line string, indentSize int) int {
 	depth := 0
 	for j := 0; j < len(line); j++ {
@@ -157,20 +82,6 @@ func describeTree(node *Node, opts *Options) string {
 
 	return strings.Join(nonBlankLines, "\n")
 }
-
-const (
-	UTF8_CHILD      string = "├── "
-	UTF8_LAST_CHILD string = "└── "
-	UTF8_DIRECTORY  string = "│   "
-	UTF8_EMPTY      string = "    "
-)
-
-const (
-	ASCII_CHILD      string = "|-- "
-	ASCII_LAST_CHILD string = "`-- "
-	ASCII_DIRECTORY  string = "|   "
-	ASCII_EMPTY      string = "    "
-)
 
 func getPrefixes(opts *Options) (string, string, string, string) {
 	if opts.charset == "ascii" {
