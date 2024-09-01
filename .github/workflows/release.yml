@@ -51,10 +51,20 @@ jobs:
       - test
       - generate
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download builds
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
+      - name: Verify Release Artifacts
+        run: |
+          ls -la dist
+          for i in "linux-amd64" "darwin-amd64" "windows-amd64"; do
+            if [[ ! -f ./dist/treelike-$i.tar.gz ]]; then
+              echo "File not found: ./dest/treelike-$i.tar.gz"
+              exit 1
+            fi
+          done
       - uses: googleapis/release-please-action@v4
         id: release
         with:
@@ -63,8 +73,8 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run:
-          gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-linux-amd64.tar.gz
-          gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-darwin-amd64.tar.gz
-          gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-windows-amd64.zip
-          # gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-darwin-arm64.tar.gz
+        run: |
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dist/treelike-linux-amd64.tar.gz
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dist/treelike-darwin-amd64.tar.gz
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dist/treelike-windows-amd64.zip
+          # gh release upload ${{ steps.release.outputs.tag_name }} ./dist/treelike-darwin-arm64.tar.gz
