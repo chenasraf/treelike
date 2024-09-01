@@ -33,7 +33,7 @@ jobs:
       - name: Generate build files
         uses: thatisuday/go-cross-build@v1
         with:
-            platforms: 'linux/amd64, darwin/amd64, darwin/arm64, windows/amd64'
+            platforms: 'linux/amd64, darwin/amd64, windows/amd64' # , darwin/arm64' # '
             package: ''
             name: 'treelike'
             compress: 'true'
@@ -42,6 +42,9 @@ jobs:
   release-please:
     name: Release
     runs-on: ubuntu-latest
+    needs:
+      - test
+      - generate
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -54,5 +57,5 @@ jobs:
         run:
           gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-linux-amd64.tar.gz
           gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-darwin-amd64.tar.gz
-          gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-darwin-arm64.tar.gz
           gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-windows-amd64.zip
+          # gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-darwin-arm64.tar.gz
