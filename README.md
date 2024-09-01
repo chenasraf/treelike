@@ -58,11 +58,43 @@ Prints a tree-like representation of the input.
 
 ## Examples
 
+### Tree File
+
+```
+usr
+  local
+  bin
+    sh
+    bash
+    zsh
+    fish
+  sbin
+    sysctl
+    tcpdump
+```
+
 ### Reading from a file
 
 ```sh
 treelike -f example.txt
 ```
+
+Outputs:
+
+```
+.
+└── usr
+    ├── local
+    ├── bin
+    │   ├── sh
+    │   ├── bash
+    │   ├── zsh
+    │   └── fish
+    └── sbin
+        ├── sysctl
+        └── tcpdump
+```
+
 
 ### Reading from stdin
 
@@ -76,10 +108,63 @@ cat example.txt | treelike -
 treelike -f example.txt -p
 ```
 
+Outputs:
+
+```
+.
+└── ./usr
+    ├── ./usr/local
+    ├── ./usr/bin
+    │   ├── ./usr/bin/sh
+    │   ├── ./usr/bin/bash
+    │   ├── ./usr/bin/zsh
+    │   └── ./usr/bin/fish
+    └── ./usr/sbin
+        ├── ./usr/sbin/sysctl
+        └── ./usr/sbin/tcpdump
+```
+
+### Without root dot
+
+```sh
+treelike -f example.txt -D
+```
+
+Outputs:
+
+```
+usr
+├── local
+├── bin
+│   ├── sh
+│   ├── bash
+│   ├── zsh
+│   └── fish
+└── sbin
+    ├── sysctl
+    └── tcpdump
+```
+
 ### Using ASCII charset
 
 ```sh
 treelike -f example.txt -c ascii
+```
+
+Outputs:
+
+```
+.
+`-- usr
+    |-- local
+    |-- bin
+    |   |-- sh
+    |   |-- bash
+    |   |-- zsh
+    |   `-- fish
+    `-- sbin
+        |-- sysctl
+        `-- tcpdump
 ```
 
 ## License
