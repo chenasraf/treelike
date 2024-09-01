@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+      - name: Test
+        run: go test -v
+
+  generate:
+    name: Generate cross-platform builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Create dist/ dir
+        run: mkdir dist
+      - name: Generate build files
+        uses: thatisuday/go-cross-build@v1
+        with:
+            platforms: 'linux/amd64, darwin/amd64, darwin/arm64, windows/amd64'
+            package: ''
+            name: 'treelike'
+            compress: 'true'
+            dest: 'dist'
+
+  release-please:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          release-type: simple
+      - name: Upload Release Artifacts
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run:
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-linux-amd64.tar.gz
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-darwin-amd64.tar.gz
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-darwin-arm64.tar.gz
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dest/treelike-windows-amd64.zip
