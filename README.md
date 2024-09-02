@@ -8,7 +8,7 @@ from a file, standard input, or command-line arguments.
 ## Usage
 
 ```sh
-treelike [OPTIONS] [PATH]
+treelike [OPTIONS] [TREE-STRUCTURE]
 ```
 
 Prints a tree-like representation of the input.
@@ -16,6 +16,7 @@ Prints a tree-like representation of the input.
 ### Options
 
 - `-h, --help`: Show help message and exit.
+-  `-V, --version`: Show the version number and exit.
 - `-f, --file FILE`: Read from FILE.
 - `-, --stdin`: Read from stdin.
 - `-c, --charset CHARSET`: Use CHARSET to display characters (utf-8, ascii).
@@ -28,19 +29,25 @@ Prints a tree-like representation of the input.
 ### From Releases
 
 1. Go to the [Releases](https://github.com/chenasraf/treelike/releases) page.
+
 2. Download the appropriate binary for your platform:
-   - **Windows**: `treelike-windows-amd64.exe`
-   - **macOS**: `treelike-darwin-amd64`
-   - **Linux**: `treelike-linux-amd64`
-3. Make the binary executable (if necessary):
+
+   - **Windows**: `treelike-windows-amd64.tar.gz`
+   - **macOS**: `treelike-darwin-amd64.tar.gz`
+   - **Linux**: `treelike-linux-amd64.tar.gz`
+
+3. Extract the tar:
    ```sh
-   chmod +x treelike-darwin-amd64  # For macOS
-   chmod +x treelike-linux-amd64   # For Linux
+   tar -xzf treelike-darwin-amd64.tar.gz  # macOS
+   tar -xzf treelike-linux-amd64.tar.gz  # Linux
    ```
-4. Move the binary to a directory in your PATH:
+4. Make the binary executable (if necessary):
    ```sh
-   mv treelike-darwin-amd64 /usr/local/bin/treelike  # For macOS
-   mv treelike-linux-amd64 /usr/local/bin/treelike   # For Linux
+   chmod +x treelike
+   ```
+5. Move the binary to a directory in your PATH:
+   ```sh
+   mv treelike /usr/local/bin/treelike
    ```
 
 ### From Source

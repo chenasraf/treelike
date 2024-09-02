@@ -1,10 +1,14 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"os"
 	"strings"
 )
+
+//go:embed version.txt
+var VERSION embed.FS
 
 // getOpts parses command-line arguments and returns an Options struct populated with the parsed values.
 // It supports various flags to customize the behavior of the program, such as reading from stdin,
@@ -31,7 +35,18 @@ func getOpts() Options {
 		switch args[0] {
 		case "-h", "--help":
 			{
-				helpText()
+				help := helpText()
+				fmt.Printf("%s", help.String())
+				os.Exit(0)
+			}
+		case "-V", "--version":
+			{
+				version, err := VERSION.ReadFile("version.txt")
+				if err != nil {
+					fmt.Println("Error getting version:", err)
+					os.Exit(0)
+				}
+				fmt.Println(string(version))
 				os.Exit(0)
 			}
 		case "-", "--stdin":

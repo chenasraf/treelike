@@ -14,11 +14,12 @@ import (
 func helpText() strings.Builder {
 	LE := getLE()
 	var builder strings.Builder
-	builder.WriteString("Usage: treelike [OPTIONS] [PATH]" + LE)
+	builder.WriteString("Usage: treelike [OPTIONS] [TREE-STRUCTURE]" + LE)
 	builder.WriteString("Prints a tree-like representation of the input." + LE)
 	builder.WriteString("" + LE)
 	builder.WriteString("Options:" + LE)
 	builder.WriteString("  -h, --help               Show this help message and exit" + LE)
+	builder.WriteString("  -V, --version            Show the version number and exit" + LE)
 	builder.WriteString("  -f, --file FILE          Read from FILE" + LE)
 	builder.WriteString("   -, --stdin              Read from stdin" + LE)
 	builder.WriteString("  -c, --charset CHARSET    Use CHARSET to display characters (utf-8, ascii)" + LE)
