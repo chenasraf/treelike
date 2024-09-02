@@ -44,9 +44,13 @@ func parseDepth(line string, indentSize int) int {
 // Returns:
 //
 //	*Node - The root node of the parsed tree structure.
-func parseInput(input string) *Node {
+func parseInput(input string, opts *Options) *Node {
 	input = strings.Replace(input, "\r", "", -1)
-	root := &Node{".", 0, []*Node{}, nil}
+	rootName := "."
+	if opts.rootPath != "" && opts.rootPath != "." {
+		rootName = opts.rootPath
+	}
+	root := &Node{rootName, 0, []*Node{}, nil}
 	current := root
 	indentSize := 0
 	LE := LE_UNIX

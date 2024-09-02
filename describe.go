@@ -25,6 +25,7 @@ func helpText() strings.Builder {
 	builder.WriteString("  -c, --charset CHARSET    Use CHARSET to display characters (utf-8, ascii)" + LE)
 	builder.WriteString("  -s, --trailing-slash     Display trailing slash on directory" + LE)
 	builder.WriteString("  -p, --full-path          Display full path" + LE)
+	builder.WriteString("  -r, --root-path          Replace root with given path. Default: \".\"" + LE)
 	builder.WriteString("  -D, --no-root-dot        Do not display a root element" + LE)
 	return builder
 }
@@ -172,8 +173,13 @@ func getName(node *Node, opts *Options) string {
 	str := chunks.String()
 
 	if opts.fullPath && node.parent != nil {
-		newOpts := Options{false, "", strings.Builder{}, opts.charset, true, opts.fullPath, opts.rootDot}
-		str = getName(node.parent, &newOpts) + str
+		newOpts := DefaultOptions()
+		newOpts.charset = opts.charset
+		newOpts.fullPath = opts.fullPath
+		newOpts.rootPath = opts.rootPath
+		newOpts.rootDot = opts.rootDot
+		newOpts.trailingSlash = true
+		str = getName(node.parent, newOpts) + str
 	}
 
 	return str

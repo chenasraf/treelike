@@ -1,0 +1,11 @@
+~
+└── ~/usr
+    ├── ~/usr/local
+    ├── ~/usr/bin
+    │   ├── ~/usr/bin/sh
+    │   ├── ~/usr/bin/bash
+    │   ├── ~/usr/bin/zsh
+    │   └── ~/usr/bin/fish
+    └── ~/usr/sbin
+        ├── ~/usr/sbin/sysctl
+        └── ~/usr/sbin/tcpdump

@@ -22,6 +22,7 @@ Prints a tree-like representation of the input.
 - `-c, --charset CHARSET`: Use CHARSET to display characters (utf-8, ascii).
 - `-s, --trailing-slash`: Display trailing slash on directory.
 - `-p, --full-path`: Display full path.
+- `-r, --root-path`: Replace root with given path. Default: "." 
 - `-D, --no-root-dot`: Do not display a root element.
 
 ## Installation

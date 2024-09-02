@@ -4,7 +4,6 @@ import (
 	"embed"
 	"fmt"
 	"os"
-	"strings"
 )
 
 //go:embed version.txt
@@ -28,8 +27,8 @@ var VERSION embed.FS
 // Returns:
 //
 //	Options - A struct containing the parsed options.
-func getOpts() Options {
-	opts := Options{false, "", strings.Builder{}, "utf-8", false, false, true}
+func getOpts() *Options {
+	opts := DefaultOptions()
 	args := os.Args[1:]
 	for len(args) > 0 {
 		switch args[0] {
@@ -82,6 +81,11 @@ func getOpts() Options {
 			{
 				opts.rootDot = false
 				args = args[1:]
+			}
+		case "-r", "--root-path":
+			{
+				opts.rootPath = args[1]
+				args = args[2:]
 			}
 		default:
 			{

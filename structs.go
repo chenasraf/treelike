@@ -10,6 +10,21 @@ type Options struct {
 	trailingSlash bool
 	fullPath      bool
 	rootDot       bool
+	rootPath      string
+}
+
+// default options factory
+func DefaultOptions() *Options {
+	return &Options{
+		fromStdin:     false,
+		fromFile:      "",
+		extra:         strings.Builder{},
+		charset:       "utf-8",
+		trailingSlash: false,
+		fullPath:      false,
+		rootDot:       true,
+		rootPath:      ".",
+	}
 }
 
 type Node struct {

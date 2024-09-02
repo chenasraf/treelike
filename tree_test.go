@@ -8,9 +8,10 @@ import (
 
 func TestDescribeTree(t *testing.T) {
 	input := "root\n    child1\n    child2\n        grandchild1\n"
-	root := parseInput(input)
-	opts := Options{rootDot: true}
-	result := describeTree(root, &opts)
+	opts := DefaultOptions()
+	opts.rootDot = true
+	root := parseInput(input, opts)
+	result := describeTree(root, opts)
 
 	expected := ".\n└── root\n    ├── child1\n    └── child2\n        └── grandchild1"
 	if result != expected {
@@ -19,8 +20,8 @@ func TestDescribeTree(t *testing.T) {
 }
 
 func TestRemovePrefix(t *testing.T) {
-	opts := Options{false, "", strings.Builder{}, "utf-8", false, false, true}
-	CHILD, LAST_CHILD, DIRECTORY, EMPTY := getPrefixes(&opts)
+	opts := DefaultOptions()
+	CHILD, LAST_CHILD, DIRECTORY, EMPTY := getPrefixes(opts)
 
 	tests := []struct {
 		str      string
@@ -33,7 +34,7 @@ func TestRemovePrefix(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := removePrefix(test.str, &opts)
+		result := removePrefix(test.str, opts)
 		if result != test.expected {
 			t.Errorf("removePrefix(%q)\n actual = %q\nwant   = %q", test.str, result, test.expected)
 		}
@@ -71,9 +72,10 @@ func TestGetPrefixes(t *testing.T) {
 
 func TestMultiRoot(t *testing.T) {
 	input := "I\n am\n  a\n   superhero!\na\n what?\na\n superhero!\n"
-	root := parseInput(input)
-	opts := Options{rootDot: true}
-	result := describeTree(root, &opts)
+	opts := DefaultOptions()
+	opts.rootDot = true
+	root := parseInput(input, opts)
+	result := describeTree(root, opts)
 	expected := ".\n├── I\n│   └── am\n│       └── a\n│           └── superhero!\n├── a\n│   └── what?\n└── a\n    └── superhero!"
 	if result != expected {
 		t.Errorf("describeTree()\n actual = %q\nwant   = %q", result, expected)
@@ -82,9 +84,10 @@ func TestMultiRoot(t *testing.T) {
 
 func TestWinNewLines(t *testing.T) {
 	input := "root\r\n    child1\r\n    child2\r\n        grandchild1\r\n"
-	root := parseInput(input)
-	opts := Options{rootDot: true}
-	result := describeTree(root, &opts)
+	opts := DefaultOptions()
+	opts.rootDot = true
+	root := parseInput(input, opts)
+	result := describeTree(root, opts)
 	expected := ".\n└── root\n    ├── child1\n    └── child2\n        └── grandchild1"
 	if result != expected {
 		t.Errorf("describeTree()\n actual = %q\nwant   = %q", result, expected)
@@ -118,13 +121,18 @@ func TestSnapshots(t *testing.T) {
 
 		tests := make(map[string]*Options)
 
-		// &Options{fromStdin, fromFile, extra, charset, trailingSlash, fullPath, rootDot}
-
-		tests[""] = &Options{false, "", strings.Builder{}, "utf-8", false, false, true}
-		tests["_ascii"] = &Options{false, "", strings.Builder{}, "ascii", false, false, true}
-		tests["_full_path"] = &Options{false, "", strings.Builder{}, "utf-8", false, true, true}
-		tests["_no_root"] = &Options{false, "", strings.Builder{}, "utf-8", false, false, false}
-		tests["_trailing_slash"] = &Options{false, "", strings.Builder{}, "utf-8", true, false, true}
+		tests[""] = DefaultOptions()
+		tests["_ascii"] = DefaultOptions()
+		tests["_ascii"].charset = "ascii"
+		tests["_full_path"] = DefaultOptions()
+		tests["_full_path"].fullPath = true
+		tests["_root_path"] = DefaultOptions()
+		tests["_root_path"].rootPath = "~"
+		tests["_root_path"].fullPath = true
+		tests["_no_root"] = DefaultOptions()
+		tests["_no_root"].rootDot = false
+		tests["_trailing_slash"] = DefaultOptions()
+		tests["_trailing_slash"].trailingSlash = true
 
 		contents, err := os.ReadFile(dirPath + string(os.PathSeparator) + entry.Name())
 
@@ -143,7 +151,7 @@ func TestSnapshots(t *testing.T) {
 				t.Errorf("Error reading file: %v", err)
 				break
 			}
-			actual := describeTree(parseInput(string(contents)), opts)
+			actual := describeTree(parseInput(string(contents), opts), opts)
 
 			if actual+"\n" != string(want) {
 				t.Errorf("describeTree()\nactual = %q\nwant   = %q\n file %v", actual, want, filePath)

@@ -24,7 +24,8 @@ func TestParseDepth(t *testing.T) {
 
 func TestParseInput(t *testing.T) {
 	input := "root\n    child1\n    child2\n        grandchild1\n"
-	root := parseInput(input)
+	opts := DefaultOptions()
+	root := parseInput(input, opts)
 
 	if root.name != "." {
 		t.Errorf("Expected root name to be '.', got %s", root.name)
