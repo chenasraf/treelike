@@ -1,0 +1,7 @@
+.
+  SceneBase (Node2D)
+    GroundLayer (TileMapLayer)
+      Player (CharacterBody2D)
+      Enemy (CharacterBody2D)
+    Trees (TileMapLayer)
+    Rocks (TileMapLayer)

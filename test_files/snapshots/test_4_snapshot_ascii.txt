@@ -1,0 +1,11 @@
+.
+`-- usr
+    |-- local
+    |-- bin
+    |   |-- sh
+    |   |-- bash
+    |   |-- zsh
+    |   `-- fish
+    `-- sbin
+        |-- sysctl
+        `-- tcpdump
