@@ -6,6 +6,24 @@ import (
 	"strings"
 )
 
+// getOpts parses command-line arguments and returns an Options struct populated with the parsed values.
+// It supports various flags to customize the behavior of the program, such as reading from stdin,
+// specifying a file, setting the charset, and more. If an invalid charset is provided, the function
+// prints an error message and exits the program.
+//
+// Supported flags:
+//
+//	-h, --help            : Display help text and exit.
+//	-, --stdin            : Read input from stdin.
+//	-f, --file <filename> : Read input from the specified file.
+//	-c, --charset <name>  : Set the charset (valid values are "utf-8" and "ascii").
+//	-s, --trailing-slash  : Enable trailing slash in output.
+//	-p, --full-path       : Enable full path in output.
+//	-D, --no-root-dot     : Disable the root dot in output.
+//
+// Returns:
+//
+//	Options - A struct containing the parsed options.
 func getOpts() Options {
 	opts := Options{false, "", strings.Builder{}, "utf-8", false, false, true}
 	args := os.Args[1:]

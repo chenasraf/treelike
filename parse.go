@@ -7,6 +7,18 @@ import (
 	"strings"
 )
 
+// parseDepth calculates the depth of a line based on its leading whitespace characters.
+// The depth is determined by counting the number of leading spaces and tabs.
+// If an indent size is provided, the depth is divided by the indent size to normalize it.
+//
+// Parameters:
+//
+//	line - The input string line whose depth is to be calculated.
+//	indentSize - The size of the indentation to be used for normalization.
+//
+// Returns:
+//
+//	int - The calculated depth of the line.
 func parseDepth(line string, indentSize int) int {
 	depth := 0
 	for j := 0; j < len(line); j++ {
@@ -21,6 +33,17 @@ func parseDepth(line string, indentSize int) int {
 	return depth
 }
 
+// parseInput parses a string input representing a tree structure and returns the root node of the tree.
+// The input string should use indentation to represent the depth of each node in the tree.
+// The function handles different line endings and adjusts the indentation size based on the input.
+//
+// Parameters:
+//
+//	input - A string representing the tree structure with nodes and indentation.
+//
+// Returns:
+//
+//	*Node - The root node of the parsed tree structure.
 func parseInput(input string) *Node {
 	input = strings.Replace(input, "\r", "", -1)
 	root := &Node{".", 0, []*Node{}, nil}
@@ -55,6 +78,19 @@ func parseInput(input string) *Node {
 	return root
 }
 
+// parseRawInput reads input based on the provided options and returns it as a strings.Builder.
+// It can read from stdin, a file, or an extra string provided in the options.
+// If an error occurs during reading, it returns the error with a description and an error code.
+//
+// Parameters:
+//
+//	opts - A pointer to an Options struct that specifies the input source.
+//
+// Returns:
+//
+//	strings.Builder - The input read from the specified source.
+//	error - An error object if an error occurred, otherwise nil.
+//	int - An error code: 0 for success, 1 for reading errors, 2 for missing input source.
 func parseRawInput(opts *Options) (strings.Builder, error, int) {
 	var input strings.Builder
 
