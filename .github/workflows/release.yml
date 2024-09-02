@@ -31,7 +31,7 @@ jobs:
       - name: Create dist/ dir
         run: mkdir dist
       - name: Generate build files
-        uses: thatisuday/go-cross-build@v1
+        uses: chenasraf/go-cross-build@v1
         with:
             platforms: 'linux/amd64, darwin/amd64, windows/amd64' # , darwin/arm64' # '
             package: ''
