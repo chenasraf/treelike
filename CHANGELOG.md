@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/chenasraf/treelike/compare/v1.0.1...v1.1.0) (2024-09-02)
+
+
+### Features
+
+* root-path option ([55032b4](https://github.com/chenasraf/treelike/commit/55032b4f6e6868db475fc4ea34f134024cb9618d))
+
 ## [1.0.1](https://github.com/chenasraf/treelike/compare/v1.0.0...v1.0.1) (2024-09-01)
 
 
