@@ -16,9 +16,9 @@ Prints a tree-like representation of the input.
 ### Options
 
 - `-h, --help`: Show help message and exit.
--  `-V, --version`: Show the version number and exit.
+- `-V, --version`: Show the version number and exit.
 - `-f, --file FILE`: Read from FILE.
-- `-, --stdin`: Read from stdin.
+- ` -, --stdin`: Read from stdin.
 - `-c, --charset CHARSET`: Use CHARSET to display characters (utf-8, ascii).
 - `-s, --trailing-slash`: Display trailing slash on directory.
 - `-p, --full-path`: Display full path.
@@ -26,6 +26,14 @@ Prints a tree-like representation of the input.
 - `-D, --no-root-dot`: Do not display a root element.
 
 ## Installation
+
+### Homebrew
+
+1. Install via Homebrew:
+   ```sh
+   brew tap chenasraf/tap
+   brew install treelike
+   ```
 
 ### From Releases
 
