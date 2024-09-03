@@ -22,39 +22,45 @@ Prints a tree-like representation of the input.
 - `-c, --charset CHARSET`: Use CHARSET to display characters (utf-8, ascii).
 - `-s, --trailing-slash`: Display trailing slash on directory.
 - `-p, --full-path`: Display full path.
-- `-r, --root-path`: Replace root with given path. Default: "." 
+- `-r, --root-path PATH`: Use PATH to change the name of the root node (default: `.`). N/A if `--no-root-dot` is enabled.
 - `-D, --no-root-dot`: Do not display a root element.
 
 ## Installation
 
 ### Homebrew
 
-1. Install via Homebrew:
+Install via Homebrew:
+
    ```sh
    brew tap chenasraf/tap
    brew install treelike
    ```
 
-### From Releases
+### Direct Download
 
-1. Go to the [Releases](https://github.com/chenasraf/treelike/releases) page.
+1. Go to the [Latest Release](https://github.com/chenasraf/treelike/releases/latest) page.
 
-2. Download the appropriate binary for your platform:
+2. Download the appropriate binary archive for your platform:
 
    - **Windows**: `treelike-windows-amd64.tar.gz`
    - **macOS**: `treelike-darwin-amd64.tar.gz`
    - **Linux**: `treelike-linux-amd64.tar.gz`
 
 3. Extract the tar:
+
    ```sh
    tar -xzf treelike-darwin-amd64.tar.gz  # macOS
    tar -xzf treelike-linux-amd64.tar.gz  # Linux
    ```
+
 4. Make the binary executable (if necessary):
+
    ```sh
    chmod +x treelike
    ```
+
 5. Move the binary to a directory in your PATH:
+
    ```sh
    mv treelike /usr/local/bin/treelike
    ```
@@ -62,14 +68,19 @@ Prints a tree-like representation of the input.
 ### From Source
 
 1. Clone the repository:
+
    ```sh
    git clone https://github.com/chenasraf/treelike.git
    ```
+
 2. Navigate to the project directory:
+
    ```sh
    cd treelike
    ```
+
 3. Build the project:
+
    ```sh
    go build -o treelike treelike.go
    ```

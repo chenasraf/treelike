@@ -25,7 +25,8 @@ func helpText() strings.Builder {
 	builder.WriteString("  -c, --charset CHARSET    Use CHARSET to display characters (utf-8, ascii)" + LE)
 	builder.WriteString("  -s, --trailing-slash     Display trailing slash on directory" + LE)
 	builder.WriteString("  -p, --full-path          Display full path" + LE)
-	builder.WriteString("  -r, --root-path          Replace root with given path. Default: \".\"" + LE)
+	builder.WriteString("  -r, --root-path          Use PATH to change the name of the root node (default: .)" + LE)
+	builder.WriteString("                           N/A if `--no-root-dot` is enabled" + LE)
 	builder.WriteString("  -D, --no-root-dot        Do not display a root element" + LE)
 	return builder
 }
