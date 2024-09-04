@@ -4,10 +4,38 @@ import (
 	"embed"
 	"fmt"
 	"os"
+	"strings"
 )
 
 //go:embed version.txt
 var VERSION embed.FS
+
+// helpText generates and returns a strings.Builder containing the help text for the program.
+// The help text includes usage instructions and descriptions of the available command-line options.
+//
+// Returns:
+//
+//	strings.Builder - A builder containing the formatted help text.
+func helpText() strings.Builder {
+	LE := getLE()
+	var builder strings.Builder
+	builder.WriteString("Usage: treelike [OPTIONS] [TREE-STRUCTURE]" + LE)
+	builder.WriteString("Prints a tree-like representation of the input." + LE)
+	builder.WriteString("" + LE)
+	builder.WriteString("Options:" + LE)
+	builder.WriteString("  -h, --help               Show this help message and exit" + LE)
+	builder.WriteString("  -V, --version            Show the version number and exit" + LE)
+	builder.WriteString("  -f, --file FILE          Read from FILE" + LE)
+	builder.WriteString("   -, --stdin              Read from stdin" + LE)
+	builder.WriteString("  -c, --charset CHARSET    Use CHARSET to display characters (utf-8, ascii)" + LE)
+	builder.WriteString("  -s, --trailing-slash     Display trailing slash on directory" + LE)
+	builder.WriteString("  -p, --full-path          Display full path" + LE)
+	builder.WriteString("  -r, --root-path          Use PATH to change the name of the root node (default: .)" + LE)
+	builder.WriteString("                           N/A if `--no-root-dot` is enabled" + LE)
+	builder.WriteString("  -D, --no-root-dot        Do not display a root element" + LE)
+	return builder
+
+}
 
 // getOpts parses command-line arguments and returns an Options struct populated with the parsed values.
 // It supports various flags to customize the behavior of the program, such as reading from stdin,
